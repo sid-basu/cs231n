@@ -1,10 +1,6 @@
-from __future__ import print_function
-
 import numpy as np
 from cs231n.classifiers.linear_svm import *
 from cs231n.classifiers.softmax import *
-from past.builtins import xrange
-
 
 class LinearClassifier(object):
 
@@ -39,8 +35,6 @@ class LinearClassifier(object):
     # Run stochastic gradient descent to optimize W
     loss_history = []
     for it in xrange(num_iters):
-      mask = np.random.choice(num_train, size = batch_size)
-
       X_batch = None
       y_batch = None
 
@@ -55,8 +49,7 @@ class LinearClassifier(object):
       # Hint: Use np.random.choice to generate indices. Sampling with         #
       # replacement is faster than sampling without replacement.              #
       #########################################################################
-      X_batch = X[mask,:]
-      y_batch = y[mask]
+      pass
       #########################################################################
       #                       END OF YOUR CODE                                #
       #########################################################################
@@ -70,13 +63,13 @@ class LinearClassifier(object):
       # TODO:                                                                 #
       # Update the weights using the gradient and the learning rate.          #
       #########################################################################
-      self.W += - learning_rate * grad 
+      pass
       #########################################################################
       #                       END OF YOUR CODE                                #
       #########################################################################
 
       if verbose and it % 100 == 0:
-        print('iteration %d / %d: loss %f' % (it, num_iters, loss))
+        print 'iteration %d / %d: loss %f' % (it, num_iters, loss)
 
     return loss_history
 
@@ -86,20 +79,19 @@ class LinearClassifier(object):
     data points.
 
     Inputs:
-    - X: A numpy array of shape (N, D) containing training data; there are N
-      training samples each of dimension D.
+    - X: D x N array of training data. Each column is a D-dimensional point.
 
     Returns:
     - y_pred: Predicted labels for the data in X. y_pred is a 1-dimensional
       array of length N, and each element is an integer giving the predicted
       class.
     """
-    y_pred = np.zeros(X.shape[0])
+    y_pred = np.zeros(X.shape[1])
     ###########################################################################
     # TODO:                                                                   #
     # Implement this method. Store the predicted labels in y_pred.            #
     ###########################################################################
-    y_pred = np.argmax(X.dot(self.W), axis = 1)
+    pass
     ###########################################################################
     #                           END OF YOUR CODE                              #
     ###########################################################################

@@ -1,6 +1,5 @@
 import numpy as np
 from random import shuffle
-from past.builtins import xrange
 
 def svm_loss_naive(W, X, y, reg):
   """
@@ -26,36 +25,22 @@ def svm_loss_naive(W, X, y, reg):
   num_classes = W.shape[1]
   num_train = X.shape[0]
   loss = 0.0
-
   for i in xrange(num_train):
     scores = X[i].dot(W)
     correct_class_score = scores[y[i]]
-    #number of classes for which the margin is cleared
-    n_classes_margin_cleared = 0
     for j in xrange(num_classes):
       if j == y[i]:
         continue
       margin = scores[j] - correct_class_score + 1 # note delta = 1
       if margin > 0:
-        #keep track of how many classes where the margin is cleared
-        n_classes_margin_cleared += 1
-        #update gradient for non y[i] classes
-        dW[:,j] += X[i]
-        #update loss
         loss += margin
-    #update gradient for y[i]    
-    dW[:,y[i]] += - n_classes_margin_cleared * X[i]
 
   # Right now the loss is a sum over all training examples, but we want it
   # to be an average instead so we divide by num_train.
   loss /= num_train
-  dW /= num_train
 
   # Add regularization to the loss.
-  loss += reg * np.sum(W * W)
-  #add regularization to the gradient
-  dW +=  2 * reg * W 
-
+  loss += 0.5 * reg * np.sum(W * W)
 
   #############################################################################
   # TODO:                                                                     #
@@ -78,28 +63,13 @@ def svm_loss_vectorized(W, X, y, reg):
   """
   loss = 0.0
   dW = np.zeros(W.shape) # initialize the gradient as zero
+
   #############################################################################
   # TODO:                                                                     #
   # Implement a vectorized version of the structured SVM loss, storing the    #
   # result in loss.                                                           #
   #############################################################################
-  scores = np.matmul(X, W)
-  scores_correct_class = scores[np.arange(scores.shape[0]), y].reshape(scores.shape[0], 1)
-  loss_matrix = scores - scores_correct_class + 1.0
-  loss_matrix[loss_matrix < 0] = 0
-  loss_matrix[np.arange(loss_matrix.shape[0]), y] = 0
-
-  loss = np.mean(np.sum(loss_matrix, axis = 1))
-  loss += reg * np.sum(W * W)
-
-  grad_matrix = np.zeros(loss_matrix.shape)
-  grad_matrix[loss_matrix > 0] = 1
-  grad_matrix[np.arange(grad_matrix.shape[0]), y] = - np.count_nonzero(grad_matrix, axis = 1)
-
-  dW = X.T.dot(grad_matrix)
-  dW /= X.shape[0]
-  dW += 2 * reg * W
-
+  pass
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################

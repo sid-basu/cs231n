@@ -125,7 +125,7 @@ class TwoLayerNet(object):
 
     da1 = dscores.dot(W2.T)
 
-    da1[a1 < 0] = 0
+    da1[a1 <= 0] = 0
 
     grads['W1'] = X.T.dot(da1)
     grads['b1'] = np.sum(da1, axis = 0)
@@ -175,7 +175,9 @@ class TwoLayerNet(object):
       # TODO: Create a random minibatch of training data and labels, storing  #
       # them in X_batch and y_batch respectively.                             #
       #########################################################################
-      pass
+      mask = np.random.choice(num_train, size = batch_size)
+      X_batch = X[mask]
+      y_batch = y[mask]
       #########################################################################
       #                             END OF YOUR CODE                          #
       #########################################################################
@@ -190,7 +192,11 @@ class TwoLayerNet(object):
       # using stochastic gradient descent. You'll need to use the gradients   #
       # stored in the grads dictionary defined above.                         #
       #########################################################################
-      pass
+      model_parameters = ['W1', 'b1', 'W2', 'b2']
+
+      for parameter in model_parameters:
+        self.params[parameter] += - learning_rate * grads[parameter]
+
       #########################################################################
       #                             END OF YOUR CODE                          #
       #########################################################################
@@ -235,7 +241,8 @@ class TwoLayerNet(object):
     ###########################################################################
     # TODO: Implement this function; it should be VERY simple!                #
     ###########################################################################
-    pass
+    X_pred = self.loss(X)
+    y_pred = np.argmax(X_pred, axis = 1)
     ###########################################################################
     #                              END OF YOUR CODE                           #
     ###########################################################################
